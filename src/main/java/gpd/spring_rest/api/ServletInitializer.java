@@ -7,7 +7,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		// TODO Auto-generated method stub
-		return 	new Class [] { WebConfig.class, JpaConfig.class};
+		return 	new Class [] { WebConfig.class, JpaConfig.class, SwaggerConfig.class};
 	} 
 
 	@Override
@@ -19,7 +19,7 @@ public class ServletInitializer extends AbstractAnnotationConfigDispatcherServle
 	@Override
 	protected String[] getServletMappings() {
 		// TODO Auto-generated method stub
-		return new String [] {"/api/*"};
+		return new String [] {"/*"}; ///api
 	}
 
 }

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
+import io.swagger.annotations.Api;
+
 @Entity
 @NamedQueries(value = { 
 		@NamedQuery(name = "User.findByEmail", query = "select u from User u where u.email =:pEmail"),
