@@ -1,6 +1,7 @@
 package gpd.spring_rest.api.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,15 +20,15 @@ public class UserRepositoryImpl implements UserRepository {
 	
 	
 	@Override
-	public User findOneByEmail(String email) {
+	public Optional<User> findOneByEmail(String email) {
 		// TODO Auto-generated method stub
 		TypedQuery<User> userQuery = em.createNamedQuery("User.findByEmail", User.class);
 		userQuery.setParameter("pEmail", email);
 		List<User> users =  userQuery.getResultList();
 		if (!users.isEmpty()) {
-			return users.get(0);
+			return Optional.ofNullable(users.get(0));
 		}
-		return null;
+		return Optional.empty();
 		
 	}
 	
@@ -39,9 +40,9 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public User findOne(String id) {
+	public Optional<User> findOne(String id) {
 		// TODO Auto-generated method stub
-		return em.find(User.class, id);
+		return Optional.ofNullable(em.find(User.class, id));
 	}
 
 	@Override

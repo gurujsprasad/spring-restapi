@@ -1,6 +1,7 @@
 package gpd.spring_rest.api.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,40 +27,40 @@ public class UserServiceImpl implements UserService{
 		
 		return userRepo.findAll();
 	}
+	
+	
 	@Transactional(readOnly=true)
 	@Override
 	public User findOne(String id) {
-		User existingUser = userRepo.findOne(id);
-		if (existingUser == null) {
-			throw new NotFoundException("user with id:"+id+" does not exist");
-		}
-		return existingUser;
+		
+		return userRepo.findOne(id).orElseThrow(() -> new NotFoundException("user with id:"+id+" does not exist"));
+		
 	}
+	
+	
 	@Transactional
 	@Override
 	public User createUser(User user) {
-		User existingUser = userRepo.findOneByEmail(user.getEmail());
-		if (existingUser != null) {
-			throw new BadRequestExceptions("user with email:"+existingUser.getEmail()+" already exists");
+		
+		Optional<User> mayExists = userRepo.findOneByEmail(user.getEmail());
+		
+		if (mayExists.isPresent()) {
+			throw  new BadRequestExceptions("user with email:"+user.getEmail()+" already exists");
 		}
 		return userRepo.createUser(user);
 	}
 	@Transactional
 	@Override
 	public User updateUser(String id, User user) {
-		User existingUser = userRepo.findOne(id);
-		if (existingUser == null) {
-			throw new NotFoundException("user with id:"+id+" does not exist");
-		}
+		
+		userRepo.findOne(id).orElseThrow(() -> new NotFoundException("user with id:"+id+" does not exist"));
 		return userRepo.updateUser(user);
 	}
 	@Transactional
 	@Override
 	public void deleteUser(String id) {
-		User existingUser = userRepo.findOne(id);
-		if (existingUser == null) {
-			throw new NotFoundException("user with id:"+id+" does not exist");
-		}
+		
+		User existingUser = userRepo.findOne(id).orElseThrow(() -> new NotFoundException("user with id:"+id+" does not exist"));
 		userRepo.deleteUser(existingUser);
 		
 	}
